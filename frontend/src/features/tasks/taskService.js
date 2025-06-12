@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "/api/tasks/";
+const API_URL = `${process.env.API_URL}/api/tasks/`;
 
 const getTasks = async (filters) => {
   const response = await axios.get(API_URL, { params: filters });
