@@ -5,7 +5,6 @@ import ManageEmployees from "../components/admin/ManageEmployees";
 
 function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("tasks");
-
   return (
     <div>
       <h1 className="text-4xl font-bold text-gray-800 mb-6">Admin Dashboard</h1>
@@ -38,5 +37,4 @@ function AdminDashboard() {
     </div>
   );
 }
-
 export default AdminDashboard;

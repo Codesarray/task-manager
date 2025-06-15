@@ -17,7 +17,7 @@ const createTask = async (req, res) => {
   res.status(201).json(createdTask);
 };
 
-// @desc    Get all tasks (Admin) or assigned tasks (Employee)
+// @desc    Get all tasks (Admin) or assigned tasks (Employee) with filters
 // @route   GET /api/tasks
 // @access  Private
 const getTasks = async (req, res) => {
@@ -55,7 +55,7 @@ const getTaskById = async (req, res) => {
     "name email"
   );
   if (task) {
-    // Employees can only view tasks assigned to them
+    // Employees can only view tasks assigned to them, unless they are an admin
     if (
       req.user.role === "employee" &&
       task.assignedTo._id.toString() !== req.user._id.toString()
@@ -81,7 +81,7 @@ const updateTask = async (req, res) => {
     task.description = description || task.description;
     task.todos = todos || task.todos;
     task.priority = priority || task.priority;
-    task.assignedTo = assignedTo || task.assignedTo;
+    task.assignedTo = assignedTo; // Allow unassigning
     task.status = status || task.status;
 
     const updatedTask = await task.save();
@@ -91,7 +91,7 @@ const updateTask = async (req, res) => {
   }
 };
 
-// @desc    Update a task's status and todos (by employee)
+// @desc    Update a task's status and todos (by employee or admin)
 // @route   PUT /api/tasks/:id/status
 // @access  Private
 const updateTaskStatus = async (req, res) => {

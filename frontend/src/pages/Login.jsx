@@ -17,66 +17,56 @@ function Login() {
   );
 
   useEffect(() => {
-    if (isError) {
-      toast.error(message);
-    }
-    if (isSuccess || user) {
-      navigate(user.role === "admin" ? "/admin" : "/");
-    }
+    if (isError) toast.error(message);
+    if (isSuccess || user) navigate(user.role === "admin" ? "/admin" : "/");
     dispatch(reset());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
-  const onChange = (e) => {
+  const onChange = (e) =>
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
-    const userData = { email, password };
-    dispatch(login(userData));
+    dispatch(login({ email, password }));
   };
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  if (isLoading) return <Spinner />;
 
   return (
     <div className="flex items-center justify-center mt-20">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <section className="heading text-center">
+        <section className="text-center">
           <h1 className="text-3xl font-bold flex items-center justify-center">
             <FaSignInAlt className="mr-2" /> Login
           </h1>
           <p className="text-gray-500 mt-2">Login to manage your tasks</p>
         </section>
-
         <section className="mt-8">
           <form onSubmit={onSubmit}>
             <div className="mb-4">
               <input
                 type="email"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 id="email"
                 name="email"
                 value={email}
-                placeholder="Enter your email"
                 onChange={onChange}
                 required
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                placeholder="Enter your email"
               />
             </div>
             <div className="mb-6">
               <input
                 type="password"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
                 id="password"
                 name="password"
                 value={password}
-                placeholder="Enter your password"
                 onChange={onChange}
                 required
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                placeholder="Enter your password"
               />
             </div>
             <div className="form-group">
@@ -93,5 +83,4 @@ function Login() {
     </div>
   );
 }
-
 export default Login;

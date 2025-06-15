@@ -20,13 +20,13 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
 
-          {/* Employee Routes */}
+          {/* Routes for logged-in users (both employee and admin) */}
           <Route path="" element={<PrivateRoute />}>
             <Route path="/" element={<EmployeeDashboard />} />
             <Route path="/task/:id" element={<TaskPage />} />
           </Route>
 
-          {/* Admin Routes */}
+          {/* Routes for admin users only */}
           <Route path="" element={<AdminRoute />}>
             <Route path="/admin" element={<AdminDashboard />} />
           </Route>

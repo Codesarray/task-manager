@@ -16,19 +16,19 @@ connectDB();
 
 const app = express();
 
-// CORS configuration
+// CORS configuration to allow requests from the frontend
 app.use(
   cors({
-    origin: ["http://localhost:5173"], // Adjust this to your frontend URL
+    origin: "http://localhost:5173", // This must match your frontend's URL
     credentials: true,
   })
 );
 
-// Body parser middleware
+// Body parser middleware to handle JSON and URL-encoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Cookie parser middleware
+// Cookie parser middleware to handle cookies
 app.use(cookieParser());
 
 // API Routes
@@ -39,7 +39,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/tasks", taskRoutes);
 
-// Error Handling Middleware
+// Error Handling Middleware (must be last)
 app.use(notFound);
 app.use(errorHandler);
 

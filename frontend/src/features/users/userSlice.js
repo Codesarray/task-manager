@@ -9,7 +9,6 @@ const initialState = {
   message: "",
 };
 
-// Create new employee
 export const addEmployee = createAsyncThunk(
   "users/add",
   async (user, thunkAPI) => {
@@ -21,8 +20,6 @@ export const addEmployee = createAsyncThunk(
     }
   }
 );
-
-// Get all employees
 export const getEmployees = createAsyncThunk(
   "users/getAll",
   async (_, thunkAPI) => {
@@ -34,8 +31,6 @@ export const getEmployees = createAsyncThunk(
     }
   }
 );
-
-// Update employee
 export const updateEmployee = createAsyncThunk(
   "users/update",
   async (user, thunkAPI) => {
@@ -47,8 +42,6 @@ export const updateEmployee = createAsyncThunk(
     }
   }
 );
-
-// Delete employee
 export const deleteEmployee = createAsyncThunk(
   "users/delete",
   async (id, thunkAPI) => {
@@ -65,10 +58,9 @@ export const deleteEmployee = createAsyncThunk(
 export const userSlice = createSlice({
   name: "users",
   initialState,
-  reducers: { reset: (state) => initialState },
+  reducers: { resetUsers: (state) => initialState },
   extraReducers: (builder) => {
     builder
-      // Add
       .addCase(addEmployee.pending, (state) => {
         state.isLoading = true;
       })
@@ -82,7 +74,6 @@ export const userSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      // Get All
       .addCase(getEmployees.pending, (state) => {
         state.isLoading = true;
       })
@@ -96,7 +87,6 @@ export const userSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      // Update
       .addCase(updateEmployee.pending, (state) => {
         state.isLoading = true;
       })
@@ -112,7 +102,6 @@ export const userSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      // Delete
       .addCase(deleteEmployee.pending, (state) => {
         state.isLoading = true;
       })
@@ -129,5 +118,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { reset } = userSlice.actions;
+export const { resetUsers } = userSlice.actions;
 export default userSlice.reducer;

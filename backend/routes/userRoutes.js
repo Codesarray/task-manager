@@ -13,10 +13,10 @@ import {
 import { protect, admin } from "../middleware/authMiddleware.js";
 
 router.post("/login", authUser);
-router.post("/logout", protect, logoutUser);
+router.post("/logout", logoutUser); // No need to protect, just clears cookie
 router.get("/profile", protect, getUserProfile);
 
-// Admin routes
+// --- Admin Only Routes ---
 router
   .route("/")
   .post(protect, admin, addEmployee)

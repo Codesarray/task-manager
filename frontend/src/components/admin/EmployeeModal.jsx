@@ -13,35 +13,24 @@ function EmployeeModal({ isOpen, onClose, employee }) {
   });
 
   useEffect(() => {
-    if (employee) {
-      setFormData({ ...employee, password: "" });
-    } else {
-      setFormData({ name: "", email: "", password: "", role: "employee" });
-    }
+    if (employee) setFormData({ ...employee, password: "" });
+    else setFormData({ name: "", email: "", password: "", role: "employee" });
   }, [employee]);
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    // For editing, don't send an empty password unless it's being changed.
     const dataToSend = { ...formData };
-    if (employee && !dataToSend.password) {
-      delete dataToSend.password;
-    }
+    if (employee && !dataToSend.password) delete dataToSend.password;
 
     const action = employee
       ? updateEmployee(dataToSend)
       : addEmployee(dataToSend);
-
     dispatch(action)
       .unwrap()
       .then(() => {
-        toast.success(
-          `Employee ${employee ? "updated" : "added"} successfully`
-        );
+        toast.success(`Employee ${employee ? "updated" : "added"}`);
         onClose();
       })
       .catch((err) => toast.error(err));
@@ -92,9 +81,7 @@ function EmployeeModal({ isOpen, onClose, employee }) {
               value={formData.password}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg"
-              placeholder={
-                employee ? "Leave blank to keep current password" : ""
-              }
+              placeholder={employee ? "Leave blank to keep current" : ""}
               required={!employee}
             />
           </div>
@@ -122,7 +109,7 @@ function EmployeeModal({ isOpen, onClose, employee }) {
               type="submit"
               className="py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
-              {employee ? "Update" : "Create"}
+              {employee ? "Update Employee" : "Create Employee"}
             </button>
           </div>
         </form>
@@ -130,5 +117,4 @@ function EmployeeModal({ isOpen, onClose, employee }) {
     </div>
   );
 }
-
 export default EmployeeModal;

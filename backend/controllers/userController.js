@@ -10,7 +10,7 @@ const authUser = async (req, res) => {
 
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id);
-    res.json({
+    res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
@@ -64,7 +64,7 @@ const addEmployee = async (req, res) => {
   const user = await User.create({ name, email, password, role });
 
   if (user) {
-    res.status(201).json({
+    res.status(21).json({
       _id: user._id,
       name: user.name,
       email: user.email,

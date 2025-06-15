@@ -7,9 +7,11 @@ const protect = async (req, res, next) => {
 
   if (token) {
     try {
+      // Verify the token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      // Get user from the database and attach it to the request object
       req.user = await User.findById(decoded.userId).select("-password");
-      next();
+      next(); // Proceed to the next middleware or route handler
     } catch (error) {
       console.error(error);
       res.status(401).json({ message: "Not authorized, token failed" });
@@ -19,7 +21,7 @@ const protect = async (req, res, next) => {
   }
 };
 
-// Admin middleware - user must have 'admin' role
+// Admin middleware - user must have the 'admin' role
 const admin = (req, res, next) => {
   if (req.user && req.user.role === "admin") {
     next();

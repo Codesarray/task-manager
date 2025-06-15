@@ -16,7 +16,6 @@ function TaskCardEmployee({ task }) {
       : task.status === "completed"
       ? 100
       : 0;
-
   return (
     <Link
       to={`/task/${task._id}`}
@@ -55,26 +54,23 @@ function EmployeeDashboard() {
   const dispatch = useDispatch();
   const { tasks, isLoading } = useSelector((state) => state.tasks);
   const { user } = useSelector((state) => state.auth);
-
   const [filters, setFilters] = useState({ status: "", priority: "" });
 
   useEffect(() => {
     dispatch(getTasks(filters));
   }, [dispatch, filters]);
 
-  const handleFilterChange = (e) => {
+  const handleFilterChange = (e) =>
     setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
 
-  if (isLoading) return <Spinner />;
+  if (isLoading && tasks.length === 0) return <Spinner />;
 
   return (
     <div>
       <h1 className="text-4xl font-bold text-gray-800 mb-2">
-        Welcome back, {user?.name}!
+        Welcome back, {user?.name.split(" ")[0]}!
       </h1>
-      <p className="text-gray-600 mb-6">Here are the tasks assigned to you.</p>
-
+      <p className="text-gray-600 mb-6">Here are your assigned tasks.</p>
       <div className="bg-white p-4 rounded-lg shadow-sm mb-6 flex items-center space-x-4">
         <span className="font-medium text-gray-700">Filter by:</span>
         <div>
@@ -82,7 +78,7 @@ function EmployeeDashboard() {
             name="status"
             value={filters.status}
             onChange={handleFilterChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           >
             <option value="">All Statuses</option>
             <option value="pending">Pending</option>
@@ -95,7 +91,7 @@ function EmployeeDashboard() {
             name="priority"
             value={filters.priority}
             onChange={handleFilterChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           >
             <option value="">All Priorities</option>
             <option value="low">Low</option>
@@ -104,14 +100,13 @@ function EmployeeDashboard() {
           </select>
         </div>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {tasks.map((task) => (
           <TaskCardEmployee key={task._id} task={task} />
         ))}
       </div>
-      {tasks.length === 0 && (
-        <div className="text-center col-span-full mt-10">
+      {tasks.length === 0 && !isLoading && (
+        <div className="text-center col-span-full mt-16">
           <p className="text-gray-500 text-lg">
             You have no tasks assigned. Great job!
           </p>
@@ -120,5 +115,4 @@ function EmployeeDashboard() {
     </div>
   );
 }
-
 export default EmployeeDashboard;

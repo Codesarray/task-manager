@@ -6,11 +6,12 @@ import Spinner from "./Spinner";
 const AdminRoute = () => {
   const { user, isLoading } = useSelector((state) => state.auth);
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  if (isLoading) return <Spinner />;
 
-  return user && user.role === "admin" ? <Outlet /> : <Navigate to="/" />;
+  return user && user.role === "admin" ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/" replace />
+  );
 };
-
 export default AdminRoute;

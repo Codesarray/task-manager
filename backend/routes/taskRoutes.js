@@ -10,16 +10,20 @@ import {
 } from "../controllers/taskController.js";
 import { protect, admin } from "../middleware/authMiddleware.js";
 
-// Admin can do everything
-router.route("/").post(protect, admin, createTask).get(protect, getTasks); // Employee can also get their tasks
+// All users can get tasks (will be filtered by role in controller)
+router.route("/").get(protect, getTasks);
 
+// All users can get a specific task (filtered by role in controller)
+router.route("/:id").get(protect, getTaskById);
+
+// All users can update the status of a task (filtered by role in controller)
+router.put("/:id/status", protect, updateTaskStatus);
+
+// --- Admin Only Routes ---
+router.route("/").post(protect, admin, createTask);
 router
   .route("/:id")
-  .get(protect, getTaskById) // Employee can also get task by id
   .put(protect, admin, updateTask)
   .delete(protect, admin, deleteTask);
-
-// Employee specific route to update their task status
-router.put("/:id/status", protect, updateTaskStatus);
 
 export default router;

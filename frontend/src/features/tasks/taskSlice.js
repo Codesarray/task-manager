@@ -12,7 +12,6 @@ const initialState = {
   message: "",
 };
 
-// All thunks defined here...
 export const getTasks = createAsyncThunk(
   "tasks/getAll",
   async (filters, thunkAPI) => {
@@ -24,7 +23,6 @@ export const getTasks = createAsyncThunk(
     }
   }
 );
-
 export const getTaskById = createAsyncThunk(
   "tasks/get",
   async (id, thunkAPI) => {
@@ -36,7 +34,6 @@ export const getTaskById = createAsyncThunk(
     }
   }
 );
-
 export const createTask = createAsyncThunk(
   "tasks/create",
   async (task, thunkAPI) => {
@@ -48,7 +45,6 @@ export const createTask = createAsyncThunk(
     }
   }
 );
-
 export const updateTask = createAsyncThunk(
   "tasks/update",
   async (task, thunkAPI) => {
@@ -60,7 +56,6 @@ export const updateTask = createAsyncThunk(
     }
   }
 );
-
 export const updateTaskStatus = createAsyncThunk(
   "tasks/updateStatus",
   async (taskData, thunkAPI) => {
@@ -72,7 +67,6 @@ export const updateTaskStatus = createAsyncThunk(
     }
   }
 );
-
 export const deleteTask = createAsyncThunk(
   "tasks/delete",
   async (id, thunkAPI) => {
@@ -89,10 +83,9 @@ export const deleteTask = createAsyncThunk(
 export const taskSlice = createSlice({
   name: "tasks",
   initialState,
-  reducers: { reset: (state) => initialState },
+  reducers: { resetTasks: (state) => initialState },
   extraReducers: (builder) => {
     builder
-      // Get All
       .addCase(getTasks.pending, (state) => {
         state.isLoading = true;
       })
@@ -108,7 +101,6 @@ export const taskSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      // Get By ID
       .addCase(getTaskById.pending, (state) => {
         state.isLoading = true;
       })
@@ -122,28 +114,24 @@ export const taskSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      // Create
       .addCase(createTask.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createTask.fulfilled, (state, action) => {
+      .addCase(createTask.fulfilled, (state) => {
         state.isLoading = false;
         state.isSuccess = true;
-        // We might just refetch tasks instead of pushing
       })
       .addCase(createTask.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      // Update
       .addCase(updateTask.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(updateTask.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        // Refetch or update in place
         state.tasks = state.tasks.map((task) =>
           task._id === action.payload._id ? action.payload : task
         );
@@ -153,14 +141,9 @@ export const taskSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      // Update Status
-      .addCase(updateTaskStatus.pending, (state) => {
-        // We don't set loading to true to provide a smoother UX
-      })
       .addCase(updateTaskStatus.fulfilled, (state, action) => {
         state.isSuccess = true;
-        state.task = action.payload; // Update the single task view
-        // Also update the task in the main list
+        state.task = action.payload;
         state.tasks = state.tasks.map((t) =>
           t._id === action.payload._id ? action.payload : t
         );
@@ -169,7 +152,6 @@ export const taskSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      // Delete
       .addCase(deleteTask.pending, (state) => {
         state.isLoading = true;
       })
@@ -186,5 +168,5 @@ export const taskSlice = createSlice({
   },
 });
 
-export const { reset } = taskSlice.actions;
+export const { resetTasks } = taskSlice.actions;
 export default taskSlice.reducer;

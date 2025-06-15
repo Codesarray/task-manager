@@ -2,7 +2,9 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
-import { FaSignInAlt, FaSignOutAlt, FaUser, FaTasks } from "react-icons/fa";
+import { resetTasks } from "../features/tasks/taskSlice";
+import { resetUsers } from "../features/users/userSlice";
+import { FaSignInAlt, FaSignOutAlt, FaTasks } from "react-icons/fa";
 
 function Header() {
   const navigate = useNavigate();
@@ -12,11 +14,13 @@ function Header() {
   const onLogout = () => {
     dispatch(logout());
     dispatch(reset());
+    dispatch(resetTasks());
+    dispatch(resetUsers());
     navigate("/login");
   };
 
   return (
-    <header className="bg-white shadow-md">
+    <header className="bg-white shadow-md sticky top-0 z-40">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="logo">
           <Link
@@ -75,5 +79,4 @@ function Header() {
     </header>
   );
 }
-
 export default Header;

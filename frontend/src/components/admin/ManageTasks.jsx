@@ -13,13 +13,11 @@ function TaskCardAdmin({ task, onEdit, onDelete }) {
     medium: "bg-yellow-100 text-yellow-800",
     low: "bg-green-100 text-green-800",
   };
-
   const statusColor = {
     pending: "bg-gray-200 text-gray-800",
     "in-progress": "bg-blue-200 text-blue-800",
     completed: "bg-green-200 text-green-800",
   };
-
   return (
     <div className="bg-white p-5 rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
       <div className="flex justify-between items-start">
@@ -58,7 +56,7 @@ function TaskCardAdmin({ task, onEdit, onDelete }) {
           </span>
         </div>
         <div className="text-sm text-gray-500">
-          Assigned to:{" "}
+          Assigned:{" "}
           <span className="font-medium">
             {task.assignedTo ? task.assignedTo.name : "Unassigned"}
           </span>
@@ -72,7 +70,6 @@ function ManageTasks() {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
-
   const { tasks, isLoading } = useSelector((state) => state.tasks);
   const { users } = useSelector((state) => state.users);
 
@@ -85,21 +82,18 @@ function ManageTasks() {
     setEditingTask(null);
     setIsModalOpen(true);
   };
-
   const handleEditTask = (task) => {
     setEditingTask(task);
     setIsModalOpen(true);
   };
-
   const handleDeleteTask = (id) => {
-    if (window.confirm("Are you sure you want to delete this task?")) {
+    if (window.confirm("Are you sure? This cannot be undone.")) {
       dispatch(deleteTask(id))
         .unwrap()
-        .then(() => toast.success("Task deleted successfully"))
+        .then(() => toast.success("Task deleted"))
         .catch((err) => toast.error(err));
     }
   };
-
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingTask(null);
@@ -132,7 +126,6 @@ function ManageTasks() {
           No tasks found. Add one!
         </p>
       )}
-
       {isModalOpen && (
         <TaskModal
           isOpen={isModalOpen}
@@ -144,5 +137,4 @@ function ManageTasks() {
     </div>
   );
 }
-
 export default ManageTasks;

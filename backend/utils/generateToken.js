@@ -6,10 +6,10 @@ const generateToken = (res, userId) => {
   });
 
   res.cookie("jwt", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV !== "development", // Use secure cookies in production
-    sameSite: "none", // Prevent CSRF attacks
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    httpOnly: true, // Prevents client-side JS from accessing the cookie
+    secure: process.env.NODE_ENV !== "development", // Use secure cookies in production (HTTPS)
+    sameSite: "strict", // Helps prevent CSRF attacks
+    maxAge: 30 * 24 * 60 * 60 * 1000, // Sets cookie expiration to 30 days
   });
 };
 
